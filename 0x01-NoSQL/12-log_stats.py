@@ -2,15 +2,23 @@
 """ provide some stats about Nginx logs """
 
 
-def nginx_stats(collection):
+def nginx_stats(co):
     """ provide some stats about Nginx logs """
     methods = ["GET", "POST", "PUT", "PATCH", "DELETE"]
-    print("{} logs".format(collection.count_documents({})))
-    
-    for i in methods:
-        print('\tmethod {}: {}'.format(i, collection.count_documents({"method": i})))
+    print("{} logs".format(co.count_documents({})))
 
-    print("{} status check".format(collection.count_documents({"method": "GET"}, {"path": "/status"})))
+    for i in methods:
+        print(
+            '\tmethod {}: {}'.format(
+                i, co.count_documents({"method": i})
+            )
+        )
+    print(
+        '{} status check'.format(
+            co.count_documents({"method": "GET", "path": "/status"})
+        )
+    )
+
 
 def main():
     from pymongo import MongoClient
@@ -20,6 +28,7 @@ def main():
     collection = db.collection
 
     nginx_stats(collection)
+
 
 if __name__ == "__main__":
     main()
