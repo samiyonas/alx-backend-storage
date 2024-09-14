@@ -21,6 +21,7 @@ def nginx_stats(co):
 
 
 def main():
+    """ the main function where we setup the configuration """
     from pymongo import MongoClient
 
     client = MongoClient("mongodb://localhost:27017")
@@ -31,4 +32,5 @@ def main():
 
 
 if __name__ == "__main__":
+    """ if this file is being run call the main function """
     main()
