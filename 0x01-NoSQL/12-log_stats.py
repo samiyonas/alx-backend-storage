@@ -27,7 +27,7 @@ def main():
 
     client = MongoClient("mongodb://localhost:27017")
     db = client.logs
-    collection = db.collection
+    collection = db.nginx
 
     nginx_stats(collection)
 
