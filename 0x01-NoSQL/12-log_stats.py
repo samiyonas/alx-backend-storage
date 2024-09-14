@@ -6,6 +6,7 @@ def nginx_stats(co):
     """ provide some stats about Nginx logs """
     methods = ["GET", "POST", "PUT", "PATCH", "DELETE"]
     print("{} logs".format(co.count_documents({})))
+    print("Methods:")
 
     for i in methods:
         print(
