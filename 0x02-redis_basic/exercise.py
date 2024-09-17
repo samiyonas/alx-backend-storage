@@ -6,17 +6,17 @@ from typing import Union, Callable
 from functools import wraps
 
 
-def count_calls(f: Callable) -> Callable:
+def count_calls(method: Callable) -> Callable:
     """ a decorator that takes a function as an argument """
-    @wraps(f)
+    @wraps(method)
     def wrapper(self, *args, **kwargs):
         """ a wrapper function for methods of the Cache class """
-        key = f.__qualname__
+        key = method.__qualname__
         if self._redis.exists(key):
             self._redis.incr(key)
         else:
             self._redis.set(key, 1)
-        return f(self, *args, **kwargs)
+        return method(self, *args, **kwargs)
     return wrapper
 
 
