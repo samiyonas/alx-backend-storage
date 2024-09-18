@@ -10,15 +10,19 @@ def cache_page(f):
     def wrapper(*args, **kwargs):
         """ wrapper function for f """
         r = redis.Redis()
-        key = "count:" + args[0]
+        count = "count:" + args[0]
 
-        result = f(*args, **kwargs)
+        r.incr(count)
 
-        if r.exists(key):
-            r.incr(key, ex=10)
-        else:
-            r.set(key, 1, ex=10)
-        return result
+        cached_html = r.get("cached:" + args[0])
+        if cached_html:
+            return cached_html
+
+        cached_html = f(*args, **kwargs)
+        r.setex("cached:" + args[0], 10, cached_html)
+
+        return cached_html
+
     return wrapper
 
 
