@@ -6,12 +6,13 @@ from functools import wraps
 from typing import Callable
 
 
+r = redis.Redis()
+
 def cache_page(f: Callable) -> Callable:
     """ decorator that cache's how many times a url was requested """
     @wraps(f)
     def wrapper(url):
         """ wrapper function for f """
-        r = redis.Redis()
 
         r.incr(f"count:{url}")
 
