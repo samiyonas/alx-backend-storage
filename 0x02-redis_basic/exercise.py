@@ -6,6 +6,22 @@ from typing import Union, Callable
 from functools import wraps
 
 
+def replay(method):
+    """ retrieving from lists """
+    r = redis.Redis()
+    key = method.__qualname__
+    inputs = r.lrange(key + ":inputs", 0, -1)
+    outputs = r.lrange(key + ":outputs", 0, -1)
+    count = r.get(key)
+
+    print("{} was called {} times:".format(key, count))
+    for i, j in zip(inputs, outputs):
+        print(
+                "{} -> {}".
+                format(i.decode("utf-8"), j.decode("utf-8"))
+                )
+
+
 def call_history(method: Callable) -> Callable:
     """ store history of inputs and outputs for particular function """
     @wraps(method)
