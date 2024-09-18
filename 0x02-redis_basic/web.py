@@ -5,8 +5,10 @@ import redis
 
 
 def cache_page(f):
+    """ decorator that cache's how many times a url was requested """
     @wraps(f)
     def wrapper(*args, **kwargs):
+        """ wrapper function for f """
         r = redis.Redis()
         key = "count:" + args[0]
 
