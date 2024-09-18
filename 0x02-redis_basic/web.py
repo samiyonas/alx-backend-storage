@@ -1,4 +1,4 @@
-#!/usr/bin/evn python3
+#!/usr/bin/env python3
 """ implementing an expiring web cache and tracker """
 import requests
 import redis
@@ -16,7 +16,7 @@ def cache_page(f):
 
         cached_html = r.get("cached:" + args[0])
         if cached_html:
-            return cached_html
+            return cached_html.decode("utf-8")
 
         cached_html = f(*args, **kwargs)
         r.setex("cached:" + args[0], 10, cached_html)
@@ -28,6 +28,6 @@ def cache_page(f):
 
 @cache_page
 def get_page(url: str) -> str:
-    response = requests.get("http://slowwly.robertomurray.co.uk")
+    response = requests.get(url)
 
     return response.text
