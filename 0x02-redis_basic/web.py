@@ -8,10 +8,11 @@ from typing import Callable
 
 r = redis.Redis()
 
+
 def cache_page(f: Callable) -> Callable:
     """ decorator that cache's how many times a url was requested """
     @wraps(f)
-    def wrapper(url):
+    def wrapper(url: Callable) -> str:
         """ wrapper function for f """
 
         r.incr(f"count:{url}")
@@ -30,6 +31,7 @@ def cache_page(f: Callable) -> Callable:
 
 @cache_page
 def get_page(url: str) -> str:
+    """ sends request to url and returns the response """
     response = requests.get(url)
 
     return response.text
