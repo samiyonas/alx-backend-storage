@@ -17,8 +17,8 @@ def replay(method):
     print("{} was called {} times:".format(key, count.decode("utf-8")))
     for i, j in zip(inputs, outputs):
         print(
-                "{} -> {}".
-                format(i, j)
+                "{}(*{}) -> {}".
+                format(key, i, j)
                 )
 
 
