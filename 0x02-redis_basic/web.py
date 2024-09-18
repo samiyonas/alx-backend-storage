@@ -2,24 +2,25 @@
 """ implementing an expiring web cache and tracker """
 import requests
 import redis
+from functools import wraps
+from typing import Callable
 
 
-def cache_page(f):
+def cache_page(f: Callable) -> Callable:
     """ decorator that cache's how many times a url was requested """
     @wraps(f)
-    def wrapper(*args, **kwargs):
+    def wrapper(url):
         """ wrapper function for f """
         r = redis.Redis()
-        count = "count:" + args[0]
 
-        r.incr(count)
+        r.incr(f"count:{url}")
 
-        cached_html = r.get("cached:" + args[0])
+        cached_html = r.get(f"cached:{url}")
         if cached_html:
             return cached_html.decode("utf-8")
 
-        cached_html = f(*args, **kwargs)
-        r.setex("cached:" + args[0], 10, cached_html)
+        cached_html = f(url)
+        r.setex(f"cached:{url}", 10, cached_html)
 
         return cached_html
 
