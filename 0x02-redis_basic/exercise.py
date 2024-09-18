@@ -14,11 +14,11 @@ def replay(method):
     outputs = r.lrange(key + ":outputs", 0, -1)
     count = r.get(key)
 
-    print("{} was called {} times:".format(key, count))
+    print("{} was called {} times:".format(key, count.decode("utf-8")))
     for i, j in zip(inputs, outputs):
         print(
                 "{} -> {}".
-                format(i.decode("utf-8"), j.decode("utf-8"))
+                format(i, j)
                 )
 
 
