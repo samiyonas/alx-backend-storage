@@ -18,7 +18,7 @@ def replay(method):
     for i, j in zip(inputs, outputs):
         print(
                 "{}(*{}) -> {}".
-                format(key, i.decode("utf-8", j.decode("utf-8")))
+                format(key, i.decode("utf-8"), j.decode("utf-8"))
                 )
 
 
